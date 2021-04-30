@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NFC E-Ink Writer</string>
+    <string name="pick_image_file_cta_text">Load Image</string>
+</resources>
