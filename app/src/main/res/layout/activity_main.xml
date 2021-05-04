@@ -7,13 +7,44 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/pick_image_file_cta"
+        android:id="@+id/cta_pick_image_file"
         android:layout_width="241dp"
         android:layout_height="65dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="260dp"
         android:text="@string/pick_image_file_cta_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/cta_new_text"
+        android:layout_width="241dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/cta_new_text_invite"
+        app:layout_constraintBottom_toTopOf="@+id/cta_new_graphic"
+        app:layout_constraintStart_toStartOf="@+id/cta_pick_image_file"
+        app:layout_constraintTop_toBottomOf="@+id/cta_pick_image_file" />
+
+    <Button
+        android:id="@+id/cta_new_graphic"
+        android:layout_width="241dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/cta_new_graphic_invite"
+        app:layout_constraintTop_toBottomOf="@+id/cta_new_text"
+        app:layout_constraintStart_toStartOf="@+id/cta_new_text"
+        tools:layout_editor_absoluteX="84dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
