@@ -3,4 +3,5 @@
     <string name="pick_image_file_cta_text">Load Image</string>
     <string name="cta_new_text_invite">New - Text</string>
     <string name="cta_new_graphic_invite">New - Graphic</string>
+    <string name="currDisplaySizeDefaultText">Select a Display Size</string>
 </resources>
