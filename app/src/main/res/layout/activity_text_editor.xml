@@ -7,7 +7,7 @@
     tools:context=".wysiwyg_editor">
 
     <Button
-        android:id="@+id/flashWysiwygButton"
+        android:id="@+id/flashTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="119dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <WebView
-        android:id="@+id/wysiwygWebView"
+        android:id="@+id/textEditWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"

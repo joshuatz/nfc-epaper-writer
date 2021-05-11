@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NFCEInkWriter">
-        <activity android:name=".wysiwyg_editor"></activity>
+        <activity android:name=".TextEditor"></activity>
+        <activity android:name=".WysiwygEditor" />
         <activity android:name=".nfc_talker">
 
             <!--

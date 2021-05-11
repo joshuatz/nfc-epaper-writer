@@ -78,6 +78,20 @@ class MainActivity : AppCompatActivity() {
             }
             startActivityForResult(intent, IntentCodes.ImageFilePicked.ordinal);
         }
+
+        // Setup WYSIWYG button click
+        val wysiwygEditButtonInvite: Button = findViewById(R.id.cta_new_graphic);
+        wysiwygEditButtonInvite.setOnClickListener {
+            val intent = Intent(this, WysiwygEditor::class.java);
+            startActivity(intent);
+        }
+
+        // Setup text button click
+        val textEditButtonInvite: Button = findViewById(R.id.cta_new_text);
+        textEditButtonInvite.setOnClickListener {
+            val intent = Intent(this, TextEditor::class.java);
+            startActivity(intent);
+        }
     }
 
     override fun onPause() {

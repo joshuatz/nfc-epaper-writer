@@ -1,0 +1,9 @@
+p {
+	background-color: red;
+	color: white;
+}
+canvas {
+	background-color: orange;
+	transform-origin: top left;
+	transform: scale(1);
+}

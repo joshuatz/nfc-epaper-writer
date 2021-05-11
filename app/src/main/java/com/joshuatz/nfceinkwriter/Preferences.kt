@@ -21,6 +21,11 @@ class Preferences {
         return this.mAppContext.getSharedPreferences(Preference_File_Key, Context.MODE_PRIVATE);
     }
 
+    public fun getScreenSize(): String {
+        val screenSize = this.getPreferences().getString(PreferenceKeys.DisplaySize, DefaultScreenSize);
+        return screenSize ?: DefaultScreenSize;
+    }
+
     public fun showScreenSizePicker(callback: (String) -> Void?) {
         val alertBuilder = AlertDialog.Builder(this.mActivity);
         alertBuilder

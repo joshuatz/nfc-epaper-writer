@@ -1,0 +1,1 @@
+ws --directory ./app/src/main/assets --https
