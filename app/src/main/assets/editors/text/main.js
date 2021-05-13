@@ -77,6 +77,7 @@ function renderToCanvas() {
 }
 
 renderToCanvas();
+setTimeout(renderToCanvas, 200);
 
 // Attach listeners
 textInput.addEventListener('keyup', renderToCanvas);

@@ -17,10 +17,6 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     private var mPreferencesController: Preferences? = null;
-    private var mNfcAdapter: NfcAdapter? = null;
-    private var mPendingIntent: PendingIntent? = null;
-    private var mNfcTechList = arrayOf(arrayOf(NfcA::class.java.name));
-    private var mNfcIntentFilters: Array<IntentFilter>? = null;
 
     private enum class IntentCodes {
         ImageFilePicked
@@ -37,27 +33,6 @@ class MainActivity : AppCompatActivity() {
         this.mPreferencesController = Preferences(this);
         var sharedPrefs = this.mPreferencesController?.getPreferences();
         this.updateScreenSizeDisplay(null);
-
-        // Set up intent and intent filters for NFC / NDEF scanning
-        // This is part of the setup for foreground dispatch system
-        val intent = Intent(this, javaClass).apply {
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        }
-        this.mPendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        // Set up the filters
-        var ndefIntentFilter: IntentFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        try {
-            ndefIntentFilter.addDataType("*/*");
-        } catch (e: IntentFilter.MalformedMimeTypeException) {
-            Log.e("mimeTypeException", "Invalid / Malformed mimeType");
-        }
-        mNfcIntentFilters = arrayOf(ndefIntentFilter);
-
-        // Init NFC adapter
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (mNfcAdapter == null) {
-            Toast.makeText(this, "NFC is not available on this device.", Toast.LENGTH_LONG).show();
-        }
 
         // Setup screen size changer
         val screenSizeChangeInvite: Button = findViewById(R.id.changeDisplaySizeInvite);
@@ -94,16 +69,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause();
-        this.mNfcAdapter?.disableForegroundDispatch(this);
-    }
-
-    override fun onResume() {
-        super.onResume();
-        this.mNfcAdapter?.enableForegroundDispatch(this, this.mPendingIntent, this.mNfcIntentFilters, this.mNfcTechList );
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == IntentCodes.ImageFilePicked.ordinal && resultCode == Activity.RESULT_OK) {
@@ -115,11 +80,6 @@ class MainActivity : AppCompatActivity() {
             }
             throw Exception("Hello!");
         }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent);
-        Log.i("New intent", "New Intent: $intent");
     }
 
     private fun updateScreenSizeDisplay(updated: String?) {

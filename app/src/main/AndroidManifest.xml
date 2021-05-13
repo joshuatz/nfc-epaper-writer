@@ -17,9 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NFCEInkWriter">
-        <activity android:name=".TextEditor"></activity>
+        <activity android:name=".NfcFlasher"></activity>
+        <activity android:name=".TextEditor" />
         <activity android:name=".WysiwygEditor" />
-        <activity android:name=".nfc_talker">
+        <activity android:name=".NfcFlasherBase">
 
             <!--
                 Note: This is not currently working, cannot override AAR this way

@@ -5,4 +5,8 @@
     <string name="cta_new_graphic_invite">New - Graphic</string>
     <string name="currDisplaySizeDefaultText">Select a Display Size</string>
     <string name="flashButtonText">Flash / Program</string>
+    <string name="image_preview_content_description">Image to Flash Preview</string>
+    <string name="hold_phone_to_flash_text">Hold Phone Against Eink Display</string>
+    <string name="imagePreviewText">Bitmap Preview:</string>
+    <string name="pleaseWaitWhileFlashingText">Please wait...</string>
 </resources>

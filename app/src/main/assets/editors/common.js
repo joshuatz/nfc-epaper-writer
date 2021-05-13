@@ -10,7 +10,7 @@ function setDisplaySize(width, height) {
 	canvas.width = width;
 	canvas.height = height;
 	scaleCanvasToScreen();
-	alert(`Canvas set to ${width}, ${height}`);
+	console.log(`Canvas set to ${width}, ${height}`);
 }
 
 
@@ -29,6 +29,33 @@ function clearCanvas() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function getBitmapFromCanvas(canvasElem = canvas) {
-	//
+/**
+ * 
+ * @param {HTMLCanvasElement} [canvasElem] 
+ * @returns {Promise<Blob>}
+ */
+function getImgBlobFromCanvas(canvasElem = canvas, mimeType = 'image/png') {
+	return new Promise((res) => {
+		canvasElem.toBlob((blob) => {
+			res(blob);
+		}, mimeType, 1);
+	});
+}
+
+async function getImgSerializedFromCanvas(canvasElem = canvas, mimeType = 'image/png', callback) {
+	const blob = await getImgBlobFromCanvas(canvasElem, mimeType);
+	/** @type {string} */
+	const base64 = await new Promise((res) => {
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			const base64WithMime = reader.result;
+			const base64 = base64WithMime.split(',')[1];
+			if (callback) {
+				callback(base64);
+			}
+			res(base64);
+		}
+		reader.readAsDataURL(blob);
+	});
+	return base64;
 }

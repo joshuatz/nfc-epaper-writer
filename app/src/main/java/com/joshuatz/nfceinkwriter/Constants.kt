@@ -1,5 +1,7 @@
 package com.joshuatz.nfceinkwriter
 
+const val PackageName = "com.joshuatz.nfceinkwriter";
+
 // Order matches WS SDK Enum
 // @see https://www.waveshare.com/wiki/Android_SDK_for_NFC-Powered_e-Paper
 val ScreenSizes = arrayOf(
@@ -32,3 +34,10 @@ object Constants {
 object PrefKeys {
     var DisplaySize = "Display_Size";
 }
+
+object IntentKeys {
+    var GeneratedImgPath = "$PackageName.imgUri";
+    var GeneratedImgMime = "$PackageName.imgMime";
+}
+
+val GeneratedImageFilename = "generated.png";
