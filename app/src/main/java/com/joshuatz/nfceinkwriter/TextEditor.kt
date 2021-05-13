@@ -9,6 +9,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
 import android.webkit.*
@@ -68,7 +69,6 @@ class TextEditor : AppCompatActivity() {
             webView.evaluateJavascript("getImgSerializedFromCanvas(undefined, undefined, (output) => window.imgStr = output);", null);
             sleep(1000L);
             webView.evaluateJavascript("window.imgStr;") { bitmapStr ->
-                Log.v("bitmapStr", bitmapStr);
                 // Convert base64 string back into raw data
                 val imageBytes = Base64.decode(bitmapStr, Base64.DEFAULT);
                 // Decode binary to bitmap

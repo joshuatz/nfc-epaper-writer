@@ -17,27 +17,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NFCEInkWriter">
-        <activity android:name=".NfcFlasher"></activity>
-        <activity android:name=".TextEditor" />
-        <activity android:name=".WysiwygEditor" />
-        <activity android:name=".NfcFlasherBase">
-
+        <activity android:name=".NfcFlasher" android:launchMode="singleTask">
             <!--
                 Note: This is not currently working, cannot override AAR this way
                 @TODO - hook into foreground dispatch system
                     - Suggested here: https://developer.android.com/guide/topics/connectivity/nfc/nfc.html#aar
                     - Implementation: https://developer.android.com/guide/topics/connectivity/nfc/advanced-nfc#foreground-dispatch
             -->
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+            <!--<intent-filter>-->
+            <!--    <action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
+            <!--    <category android:name="android.intent.category.DEFAULT" />-->
 
-                <data
-                    android:host="ext"
-                    android:pathPattern=".*waveshare.feng.nfctag.*"
-                    android:scheme="vnd.android.nfc" />
-            </intent-filter>
+            <!--    <data-->
+            <!--        android:host="ext"-->
+            <!--        android:pathPattern=".*waveshare.feng.nfctag.*"-->
+            <!--        android:scheme="vnd.android.nfc" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".TextEditor" />
+        <activity android:name=".WysiwygEditor" />
+        <activity android:name=".NfcFlasherBase" android:launchMode="singleTask">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

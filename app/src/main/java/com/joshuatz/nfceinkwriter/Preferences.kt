@@ -26,6 +26,11 @@ class Preferences {
         return screenSize ?: DefaultScreenSize;
     }
 
+    public fun getScreenSizeEnum(): Int {
+        val screenSize: String = this.getPreferences().getString(PreferenceKeys.DisplaySize, DefaultScreenSize)!!;
+        return (ScreenSizes.indexOf(screenSize) + 1);
+    }
+
     public fun showScreenSizePicker(callback: (String) -> Void?) {
         val alertBuilder = AlertDialog.Builder(this.mActivity);
         alertBuilder

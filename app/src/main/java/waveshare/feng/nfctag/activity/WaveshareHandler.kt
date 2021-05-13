@@ -36,14 +36,14 @@ class WaveshareHandler {
         var done = false;
         var failMsg = "";
         var success = false;
-        // Track progress while running
-        val progressBar: ProgressBar = mActivity.findViewById(R.id.nfcFlashProgressbar);
-        progressBar.min = 0;
-        progressBar.max = 100;
         val progressDialogBuilder = AlertDialog.Builder(mActivity);
         progressDialogBuilder.setView(R.layout.nfc_write_dialog);
         val progressDialog = progressDialogBuilder.create();
         progressDialog.show();
+        // Track progress while running
+        val progressBar: ProgressBar = progressDialog.findViewById(R.id.nfcFlashProgressbar);
+        progressBar.min = 0;
+        progressBar.max = 100;
         launch {
             while (!done) {
                 progressBar.progress = progress;

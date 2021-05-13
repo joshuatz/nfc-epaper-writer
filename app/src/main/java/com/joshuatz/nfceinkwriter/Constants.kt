@@ -2,7 +2,9 @@ package com.joshuatz.nfceinkwriter
 
 const val PackageName = "com.joshuatz.nfceinkwriter";
 
-// Order matches WS SDK Enum
+const val WaveShareUID = "WSDZ10m";
+
+// Order matches WS SDK Enum (except off by 1, due to zero-index)
 // @see https://www.waveshare.com/wiki/Android_SDK_for_NFC-Powered_e-Paper
 val ScreenSizes = arrayOf(
     "2.13\"",
@@ -33,6 +35,7 @@ object Constants {
 
 object PrefKeys {
     var DisplaySize = "Display_Size";
+    var GeneratedImgPath = "Generated_Image_Path";
 }
 
 object IntentKeys {
