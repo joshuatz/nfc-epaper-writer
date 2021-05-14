@@ -10,14 +10,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.nfc.tech.NfcA
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.joshuatz.nfceinkwriter.R
-import kotlinx.coroutines.*
 import java.io.IOException
 import kotlin.concurrent.thread
-import waveshare.feng.nfctag.activity.a;
 
 
 class WaveShareHandler {
@@ -42,32 +42,50 @@ class WaveShareHandler {
         var success = false;
         val progressDialogBuilder = AlertDialog.Builder(mActivity);
         progressDialogBuilder.setView(R.layout.nfc_write_dialog);
+        progressDialogBuilder.setTitle("Flashing NFC");
         val progressDialog = progressDialogBuilder.create();
         progressDialog.show();
         // Track progress while running
         val progressBar: ProgressBar = progressDialog.findViewById(R.id.nfcFlashProgressbar);
         progressBar.min = 0;
         progressBar.max = 100;
-        thread {
+        Thread {
             while (!done) {
                 progressBar.progress = progress;
                 Thread.sleep(10L);
             }
-        }
+        }.start();
         try {
-            // For some reason, a() is heavily overloaded, and signature with no args
-            // is used as "initialization" method
-            instance.a();
-            val successInt = instance.a(nfcTag, ePaperSize, bitmap);
-            if (successInt == 1) {
-                // Success!
-                success = true;
-                val toast = Toast.makeText(mActivity.applicationContext, "Flash Successful!", Toast.LENGTH_LONG);
-                toast.show();
+            // Initialize
+            val connectionSuccessInt = this.mInstance.a(nfcTag);
+            // Override WaveShare's SDK default of 700
+            nfcTag.timeout = 1200;
+            if (connectionSuccessInt != 1) {
+                // IO exception in nfcTag.connect()
+                failMsg = "Failed to connect to tag";
             } else {
-                // Hmm... not sure where they were getting txfail in their sample SDK code
-                // val failMsg = getString(R.string.txfail);
-                failMsg = "Failed to write over NFC";
+                var flashSuccessInt = -1;
+                Thread {
+                    flashSuccessInt = this.mInstance.a(ePaperSize, bitmap);
+                }.apply {
+                    start();
+                    join();
+                }
+                if (flashSuccessInt == 1) {
+                    // Success!
+                    val toast = Toast.makeText(
+                        mActivity.applicationContext,
+                        "Flash Successful!",
+                        Toast.LENGTH_LONG
+                    );
+                    toast.show();
+                } else {
+                    if (flashSuccessInt == 2) {
+                        failMsg = "Incorrect image resolution";
+                    } else {
+                        failMsg = "Failed to write over NFC, unknown reason";
+                    }
+                }
             }
         } catch (e: IOException) {
             failMsg = e.toString();
@@ -75,7 +93,9 @@ class WaveShareHandler {
         }
 
         done = true;
-        progressDialog.hide();
+        Handler(Looper.getMainLooper()).postDelayed({
+            progressDialog.hide();
+        }, 2000L);
         if (!success) {
             val toast = Toast.makeText(mActivity.applicationContext, "FAILED to Flash :( $failMsg", Toast.LENGTH_LONG);
             toast.show();

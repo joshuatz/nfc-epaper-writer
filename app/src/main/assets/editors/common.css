@@ -3,7 +3,8 @@ p {
 	color: white;
 }
 canvas {
-	background-color: orange;
+	margin: 10px;
+	border: 1px dashed black;
 	transform-origin: top left;
 	transform: scale(1);
 }

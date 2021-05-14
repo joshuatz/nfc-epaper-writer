@@ -139,7 +139,6 @@ open class NfcFlasherBase : AppCompatActivity() {
                 Log.v("Matched!", "Tag is a match! Preparing to flash...");
                 this.mIsFlashing = true;
                 val waveshareHandler = WaveShareHandler(this);
-                // @TODO - get ePaperSize from prefs, use and call sendBitmap
                 val nfcaObj = NfcA.get(detectedTag);
                 try {
                     val success = waveshareHandler.sendBitmap(nfcaObj, screenSizeEnum, bitmap);
@@ -149,6 +148,7 @@ open class NfcFlasherBase : AppCompatActivity() {
                         nfcaObj.close();
                     } catch (e: IOException) {
                         e.printStackTrace();
+                        Log.v("NfcFlasherBase, Exception", e.message ?: "No e.message");
                         Log.v("Flashing failed", "See trace above");
                     }
                     Log.v("Tag closed", "Setting flash in progress = false");

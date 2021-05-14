@@ -10,9 +10,9 @@ let textColor = 'black';
  * @param {string} text
  * @param {string} fontFace
  */
-function fitAndFillTextCenter(text, fontFace = 'Arial') {
+function fitAndFillTextCenter(text, fontFace = 'Arial', paddingW = 4) {
 	const { height: canvasH, width: canvasW } = canvas;
-	let fontSize = getFontSizeToFit(text, fontFace, canvasW, canvasH);
+	let fontSize = getFontSizeToFit(text, fontFace, canvasW - (paddingW * 2), canvasH);
 	ctx.fillStyle = textColor;
 	ctx.font = fontSize + `px ${fontFace}`;
 
