@@ -13,7 +13,7 @@ import android.os.PatternMatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import waveshare.feng.nfctag.activity.WaveshareHandler
+import waveshare.feng.nfctag.activity.WaveShareHandler
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -134,11 +134,11 @@ open class NfcFlasherBase : AppCompatActivity() {
                 }
             }
 
-            if (!mIsFlashing && bitmap != null) {
+            if (!mIsFlashing) {
                 // Here we go!!!
                 Log.v("Matched!", "Tag is a match! Preparing to flash...");
                 this.mIsFlashing = true;
-                val waveshareHandler = WaveshareHandler(this);
+                val waveshareHandler = WaveShareHandler(this);
                 // @TODO - get ePaperSize from prefs, use and call sendBitmap
                 val nfcaObj = NfcA.get(detectedTag);
                 try {
@@ -149,8 +149,13 @@ open class NfcFlasherBase : AppCompatActivity() {
                         nfcaObj.close();
                     } catch (e: IOException) {
                         e.printStackTrace();
+                        Log.v("Flashing failed", "See trace above");
                     }
+                    Log.v("Tag closed", "Setting flash in progress = false");
+                    this.mIsFlashing = false;
                 }
+            } else {
+                Log.v("Not flashing", "Flashing already in progress!");
             }
         }
     }

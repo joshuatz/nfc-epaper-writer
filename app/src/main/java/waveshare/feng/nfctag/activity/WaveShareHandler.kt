@@ -10,29 +10,33 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.nfc.tech.NfcA
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.joshuatz.nfceinkwriter.R
 import kotlinx.coroutines.*
 import java.io.IOException
+import kotlin.concurrent.thread
+import waveshare.feng.nfctag.activity.a;
 
-class WaveshareHandler {
-    private var isWriting = false;
-    private var isScanning = false;
-    private var instance = a();
+
+class WaveShareHandler {
     private val mActivity: Activity;
+    private val mInstance: a;
 
     constructor(activity: Activity) {
+        this.mInstance = a();
+        this.mInstance.a();
         this.mActivity = activity;
     }
 
     /** Props with getters */
-    val progress get() = instance.b();
+    val progress get() = this.mInstance.c;
 
     /**
      * Main sending function
      */
-    fun sendBitmap(nfcTag: NfcA, ePaperSize: Int, bitmap: Bitmap) = runBlocking {
+    fun sendBitmap(nfcTag: NfcA, ePaperSize: Int, bitmap: Bitmap): Boolean {
         var done = false;
         var failMsg = "";
         var success = false;
@@ -44,14 +48,16 @@ class WaveshareHandler {
         val progressBar: ProgressBar = progressDialog.findViewById(R.id.nfcFlashProgressbar);
         progressBar.min = 0;
         progressBar.max = 100;
-        launch {
+        thread {
             while (!done) {
                 progressBar.progress = progress;
-                delay(10L);
+                Thread.sleep(10L);
             }
         }
         try {
-            //
+            // For some reason, a() is heavily overloaded, and signature with no args
+            // is used as "initialization" method
+            instance.a();
             val successInt = instance.a(nfcTag, ePaperSize, bitmap);
             if (successInt == 1) {
                 // Success!
@@ -61,11 +67,11 @@ class WaveshareHandler {
             } else {
                 // Hmm... not sure where they were getting txfail in their sample SDK code
                 // val failMsg = getString(R.string.txfail);
-                val failMsg = "Failed to write over NFC";
+                failMsg = "Failed to write over NFC";
             }
         } catch (e: IOException) {
-            //
             failMsg = e.toString();
+            Log.v("WaveshareHandler, IO Exception", failMsg);
         }
 
         done = true;
@@ -75,6 +81,6 @@ class WaveshareHandler {
             toast.show();
         }
 
-        return@runBlocking success;
+        return success;
     }
 }
