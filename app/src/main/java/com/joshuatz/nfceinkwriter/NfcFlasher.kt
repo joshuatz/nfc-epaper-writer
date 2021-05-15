@@ -1,19 +1,18 @@
 package com.joshuatz.nfceinkwriter
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 
 class NfcFlasher : NfcFlasherBase() {
-    private var mImgFilePath: String? = null;
-    private var mImgFileUri: Uri? = null;
+    private var mImgFilePath: String? = null
+    private var mImgFileUri: Uri? = null
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState)
         if (mImgFileUri != null) {
-            outState.putString("serializedGeneratedImgUri",mImgFileUri.toString());
+            outState.putString("serializedGeneratedImgUri",mImgFileUri.toString())
         }
     }
 
@@ -22,25 +21,25 @@ class NfcFlasher : NfcFlasherBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nfc_flasher)
 
-        val savedUriStr = savedInstanceState?.getString("serializedGeneratedImgUri");
+        val savedUriStr = savedInstanceState?.getString("serializedGeneratedImgUri")
         if (savedUriStr != null) {
-            mImgFileUri = Uri.parse(savedUriStr);
+            mImgFileUri = Uri.parse(savedUriStr)
         } else {
-            val intentExtras = intent.extras;
-            mImgFilePath = intentExtras?.getString(IntentKeys.GeneratedImgPath);
+            val intentExtras = intent.extras
+            mImgFilePath = intentExtras?.getString(IntentKeys.GeneratedImgPath)
             if (mImgFilePath != null) {
                 // @TODO - handle exceptions, navigate back to prev activity
-                val fileRef = getFileStreamPath(mImgFilePath);
-                mImgFileUri = Uri.fromFile(fileRef);
+                val fileRef = getFileStreamPath(mImgFilePath)
+                mImgFileUri = Uri.fromFile(fileRef)
             }
         }
 
-        val imagePreviewElem: ImageView = findViewById(R.id.previewImageView);
-        imagePreviewElem.setImageURI(mImgFileUri);
+        val imagePreviewElem: ImageView = findViewById(R.id.previewImageView)
+        imagePreviewElem.setImageURI(mImgFileUri)
 
         if (mImgFileUri != null) {
-            val bmOptions = BitmapFactory.Options();
-            this.mBitmap = BitmapFactory.decodeFile(mImgFileUri!!.path, bmOptions);
+            val bmOptions = BitmapFactory.Options()
+            this.mBitmap = BitmapFactory.decodeFile(mImgFileUri!!.path, bmOptions)
         }
     }
 }

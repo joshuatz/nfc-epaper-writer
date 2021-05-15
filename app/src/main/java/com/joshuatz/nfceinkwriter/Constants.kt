@@ -1,8 +1,8 @@
 package com.joshuatz.nfceinkwriter
 
-const val PackageName = "com.joshuatz.nfceinkwriter";
+const val PackageName = "com.joshuatz.nfceinkwriter"
 
-const val WaveShareUID = "WSDZ10m";
+const val WaveShareUID = "WSDZ10m"
 
 // Order matches WS SDK Enum (except off by 1, due to zero-index)
 // @see https://www.waveshare.com/wiki/Android_SDK_for_NFC-Powered_e-Paper
@@ -16,7 +16,7 @@ val ScreenSizes = arrayOf(
     "2.9\" v.B",
 )
 
-val DefaultScreenSize = ScreenSizes[1];
+val DefaultScreenSize = ScreenSizes[1]
 
 val ScreenSizesInPixels = mapOf(
     "2.13\"" to Pair(250, 122),
@@ -29,18 +29,18 @@ val ScreenSizesInPixels = mapOf(
 )
 
 object Constants {
-    var Preference_File_Key = "Preferences";
-    var PreferenceKeys = PrefKeys;
+    var Preference_File_Key = "Preferences"
+    var PreferenceKeys = PrefKeys
 }
 
 object PrefKeys {
-    var DisplaySize = "Display_Size";
-    var GeneratedImgPath = "Generated_Image_Path";
+    var DisplaySize = "Display_Size"
+    var GeneratedImgPath = "Generated_Image_Path"
 }
 
 object IntentKeys {
-    var GeneratedImgPath = "$PackageName.imgUri";
-    var GeneratedImgMime = "$PackageName.imgMime";
+    var GeneratedImgPath = "$PackageName.imgUri"
+    var GeneratedImgMime = "$PackageName.imgMime"
 }
 
-val GeneratedImageFilename = "generated.png";
+val GeneratedImageFilename = "generated.png"
