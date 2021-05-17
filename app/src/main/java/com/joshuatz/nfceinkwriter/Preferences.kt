@@ -30,6 +30,11 @@ class Preferences {
         return (ScreenSizes.indexOf(screenSize) + 1)
     }
 
+    fun getScreenSizePixels(): Pair<Int, Int> {
+        val screenSize: String = this.getPreferences().getString(PreferenceKeys.DisplaySize, DefaultScreenSize)!!
+        return ScreenSizesInPixels[screenSize]!!
+    }
+
     fun showScreenSizePicker(callback: (String) -> Void?) {
         val alertBuilder = AlertDialog.Builder(this.mActivity)
         alertBuilder
