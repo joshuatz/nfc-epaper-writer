@@ -1,11 +1,19 @@
 package com.joshuatz.nfceinkwriter
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+class WysiwygEditor : GraphicEditorBase() {
+    override val layoutId = R.layout.activity_wysiwyg_editor
+    override val flashButtonId = R.id.flashWysiwygButton
+    override val webViewId = R.id.wysiwygWebView
+    override val webViewUrl = "https://jspaint.app/"
 
-class WysiwygEditor : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wysiwyg_editor)
+    override fun onWebViewPageStarted() {
+        super.onWebViewPageStarted()
+        Utils.injectEditorCommonJs(this.mWebView!!)
+        Utils.injectAssetJs(this.mWebView!!, "/editors/wysiwyg/main.js")
+    }
+
+    override fun onWebViewPageFinished() {
+        super.onWebViewPageFinished()
+        this.updateCanvasSize()
     }
 }

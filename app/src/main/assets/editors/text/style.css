@@ -1,0 +1,14 @@
+.inputArea {
+	justify-content: space-evenly;
+}
+#textInput {
+	min-height: 100px;
+}
+.buttonsWrapper {
+	align-content: center;
+}
+.buttonsWrapper button {
+	padding: 4px 8px;
+	margin: 7px auto;
+	font-size: 1.2rem;
+}

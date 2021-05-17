@@ -8,6 +8,8 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+    <!-- This is for the WYSIWYG app - remove if rolling own version -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"

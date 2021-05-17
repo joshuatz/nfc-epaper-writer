@@ -1,9 +1,14 @@
 // @ts-check
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
 const textInput = document.querySelector('textarea');
 const defaultText = textInput.value;
 let inverted = false;
 let bgColor = 'white';
 let textColor = 'black';
+
+const commonInstance = new NfcEIWCommon(canvas);
+const clearCanvas = commonInstance.clearCanvas.bind(commonInstance);
 
 /**
  * Adapted from https://stackoverflow.com/a/65433398/11447682
@@ -11,6 +16,10 @@ let textColor = 'black';
  * @param {string} fontFace
  */
 function fitAndFillTextCenter(text, fontFace = 'Arial', paddingW = 4) {
+	if (!text) {
+		clearCanvas();
+		return;
+	}
 	const { height: canvasH, width: canvasW } = canvas;
 	let fontSize = getFontSizeToFit(text, fontFace, canvasW - (paddingW * 2), canvasH);
 	ctx.fillStyle = textColor;
@@ -38,14 +47,20 @@ function fitAndFillTextCenter(text, fontFace = 'Arial', paddingW = 4) {
  * @param {number} height
  */
 function getFontSizeToFit(text, fontFace, width, height) {
+	const lineSpacingPercent = 20;
 	ctx.font = `1px ${fontFace}`;
 
 	let fitFontWidth = Number.MAX_VALUE;
+	let lineCount = 1;
 	const lines = text.match(/[^\r\n]+/g);
-	lines.forEach((line) => {
-		fitFontWidth = Math.min(fitFontWidth, width / ctx.measureText(line).width);
-	});
-	let fitFontHeight = height / (lines.length * 1.2); // if you want more spacing between line, you can increase this value
+	if (lines) {
+		lineCount = lines.length;
+		lines.forEach((line) => {
+			fitFontWidth = Math.min(fitFontWidth, width / ctx.measureText(line).width);
+		});
+	}
+	let fitFontHeight = height / (lineCount * (1 + (lineSpacingPercent / 100)));
+	console.log({fitFontHeight, fitFontWidth})
 	return Math.min(fitFontHeight, fitFontWidth);
 }
 

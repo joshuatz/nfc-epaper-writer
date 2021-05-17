@@ -138,10 +138,10 @@ open class NfcFlasherBase : AppCompatActivity() {
                 // Here we go!!!
                 Log.v("Matched!", "Tag is a match! Preparing to flash...")
                 this.mIsFlashing = true
-                val waveshareHandler = WaveShareHandler(this)
+                val waveShareHandler = WaveShareHandler(this)
                 val nfcaObj = NfcA.get(detectedTag)
                 try {
-                    val success = waveshareHandler.sendBitmap(nfcaObj, screenSizeEnum, bitmap)
+                    val success = waveShareHandler.sendBitmap(nfcaObj, screenSizeEnum, bitmap)
                     Log.v("Final success val", "Success = $success")
                 } finally {
                     try {

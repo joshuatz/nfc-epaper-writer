@@ -33,6 +33,11 @@ class NfcFlasher : NfcFlasherBase() {
                 mImgFileUri = Uri.fromFile(fileRef)
             }
         }
+        if (mImgFileUri == null) {
+            // Fallback to last generated image
+            val fileRef = getFileStreamPath(GeneratedImageFilename)
+            mImgFileUri = Uri.fromFile(fileRef)
+        }
 
         val imagePreviewElem: ImageView = findViewById(R.id.previewImageView)
         imagePreviewElem.setImageURI(mImgFileUri)

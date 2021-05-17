@@ -9,4 +9,5 @@
     <string name="hold_phone_to_flash_text">Hold Phone Against Eink Display</string>
     <string name="imagePreviewText">Bitmap Preview:</string>
     <string name="pleaseWaitWhileFlashingText">Please wait...</string>
+    <string name="reflash_cta_text">Reflash Last Image</string>
 </resources>

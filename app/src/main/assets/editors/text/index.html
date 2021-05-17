@@ -6,18 +6,20 @@
 		<title>Page Title</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" type="text/css" media="screen" href="../common.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="./style.css" />
 	</head>
 	<body>
-		<div class="inputArea">
-			<textarea id="textInput">Write your message here!</textarea>
-			<button id="addLineBreak">+ Line Break</button>
-			<button id="setInverted">Invert</button>
-			<button id="reset">Reset</button>
+		<div class="inputArea flex row">
+			<textarea class="col shadow-md" id="textInput">Write your message here!</textarea>
+			<div class="flex row col buttonsWrapper">
+				<button class="shadow-sm" id="addLineBreak">+ Line Break</button>
+				<button class="shadow-sm" id="setInverted">Invert</button>
+				<button class="shadow-sm" id="reset">Reset</button>
+			</div>
 		</div>
-		<div class="canvasWrapper">
+		<div class="canvasWrapper flex row">
 			<canvas width="296" height="128"></canvas>
 		</div>
-		<img id="test" />
 		<script src="../common.js"></script>
 		<script src="main.js"></script>
 	</body>
