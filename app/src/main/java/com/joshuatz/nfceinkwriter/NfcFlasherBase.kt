@@ -9,6 +9,8 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.NfcA
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PatternMatcher
 import android.util.Log
 import android.widget.Toast
@@ -23,7 +25,19 @@ open class NfcFlasherBase : AppCompatActivity() {
     private var mPendingIntent: PendingIntent? = null
     private var mNfcTechList = arrayOf(arrayOf(NfcA::class.java.name))
     private var mNfcIntentFilters: Array<IntentFilter>? = null
+    private val mNfcCheckIntervalMs = 250L
+    private var mNfcCheckHandler: Handler? = null
     protected var mBitmap: Bitmap? = null
+
+    // Note: Use of object expression / anon class is so `this` can be used
+    // for reference to runnable (which would normally be off-limits)
+    private val mNfcCheckCallback: Runnable = object: Runnable {
+        override fun run() {
+            checkNfcAndAttemptRecover()
+            // Loop!
+            mNfcCheckHandler?.postDelayed(this, mNfcCheckIntervalMs)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,16 +80,21 @@ open class NfcFlasherBase : AppCompatActivity() {
         if (mNfcAdapter == null) {
             Toast.makeText(this, "NFC is not available on this device.", Toast.LENGTH_LONG).show()
         }
+
+        // Start NFC check loop in case adapter dies
+        startNfcCheckLoop()
     }
 
     override fun onPause() {
         super.onPause()
-        this.mNfcAdapter?.disableForegroundDispatch(this)
+        this.stopNfcCheckLoop()
+        this.disableForegroundDispatch()
     }
 
     override fun onResume() {
         super.onResume()
-        this.mNfcAdapter?.enableForegroundDispatch(this, this.mPendingIntent, this.mNfcIntentFilters, this.mNfcTechList )
+        this.startNfcCheckLoop()
+        this.enableForegroundDispatch()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -107,7 +126,11 @@ open class NfcFlasherBase : AppCompatActivity() {
             // Do an explicit check for the ID. This ID *appears* to be constant across all models
             if (tagId != WaveShareUID) {
                 Log.v("Invalid tag ID", "$tagId != $WaveShareUID")
-                return
+                // Currently, this ID is sometimes coming back corrupted, so it is a unreliable check
+                // only enforce check if type != ndef, because in those cases we can't check AAR
+                if (intent.action != NfcAdapter.ACTION_NDEF_DISCOVERED) {
+                    return
+                }
             }
 
             // ACTION_NDEF_DISCOVERED has the filter applied for the AAR record *type*,
@@ -157,6 +180,56 @@ open class NfcFlasherBase : AppCompatActivity() {
             } else {
                 Log.v("Not flashing", "Flashing already in progress!")
             }
+        }
+    }
+
+    private fun enableForegroundDispatch() {
+        this.mNfcAdapter?.enableForegroundDispatch(this, this.mPendingIntent, this.mNfcIntentFilters, this.mNfcTechList )
+    }
+
+    private fun disableForegroundDispatch() {
+        this.mNfcAdapter?.disableForegroundDispatch(this)
+    }
+
+    private fun startNfcCheckLoop() {
+        if (mNfcCheckHandler == null) {
+            Log.v("NFC Check Loop", "START")
+            mNfcCheckHandler = Handler(Looper.getMainLooper())
+            mNfcCheckHandler?.postDelayed(mNfcCheckCallback, mNfcCheckIntervalMs)
+        }
+    }
+
+    private fun stopNfcCheckLoop() {
+        if (mNfcCheckHandler != null) {
+            mNfcCheckHandler?.removeCallbacks(mNfcCheckCallback)
+        }
+        mNfcCheckHandler = null
+    }
+
+    private fun checkNfcAndAttemptRecover() {
+        if (mNfcAdapter != null) {
+            var isEnabled = false
+            // Apparently querying the property can cause it to get updated
+            // https://stackoverflow.com/a/55691449/11447682
+            try {
+                isEnabled = mNfcAdapter?.isEnabled ?: false
+                if (!isEnabled) {
+                    Log.v("NFC Check #1", "NFC is disabled. Checking again.")
+                }
+            } catch (_: Exception) {}
+            try {
+                isEnabled = mNfcAdapter?.isEnabled ?: false
+                if (!isEnabled) {
+                    Log.v("NFC Check #2", "NFC is disabled.")
+                }
+            } catch (_: Exception) {}
+            if (isEnabled) {
+                enableForegroundDispatch()
+            } else {
+                Log.w("NFC Check", "NFC is disabled - could be waiting on a system recovery")
+            }
+        } else {
+            Log.e("NFC Check", "Adapter is completely unavailable!")
         }
     }
 }

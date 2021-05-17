@@ -51,7 +51,7 @@ class WaveShareHandler {
         Thread {
             while (!done) {
                 progressBar.progress = progress
-                Thread.sleep(10L)
+                Thread.sleep(50L)
             }
         }.start()
         try {
