@@ -60,7 +60,6 @@ function getFontSizeToFit(text, fontFace, width, height) {
 		});
 	}
 	let fitFontHeight = height / (lineCount * (1 + (lineSpacingPercent / 100)));
-	console.log({fitFontHeight, fitFontWidth})
 	return Math.min(fitFontHeight, fitFontWidth);
 }
 

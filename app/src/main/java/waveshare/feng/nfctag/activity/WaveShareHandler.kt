@@ -7,16 +7,15 @@
 package waveshare.feng.nfctag.activity
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.nfc.tech.NfcA
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.widget.ProgressBar
-import android.widget.Toast
-import com.joshuatz.nfceinkwriter.R
 import java.io.IOException
+
+interface FlashResult {
+    val success: Boolean
+    val errMessage: String
+}
 
 
 class WaveShareHandler {
@@ -35,25 +34,10 @@ class WaveShareHandler {
     /**
      * Main sending function
      */
-    fun sendBitmap(nfcTag: NfcA, ePaperSize: Int, bitmap: Bitmap): Boolean {
-        var done = false
+    fun sendBitmap(nfcTag: NfcA, ePaperSize: Int, bitmap: Bitmap): FlashResult {
         var failMsg = ""
         var success = false
-        val progressDialogBuilder = AlertDialog.Builder(mActivity)
-        progressDialogBuilder.setView(R.layout.nfc_write_dialog)
-        progressDialogBuilder.setTitle("Flashing NFC")
-        val progressDialog = progressDialogBuilder.create()
-        progressDialog.show()
-        // Track progress while running
-        val progressBar: ProgressBar = progressDialog.findViewById(R.id.nfcFlashProgressbar)
-        progressBar.min = 0
-        progressBar.max = 100
-        Thread {
-            while (!done) {
-                progressBar.progress = progress
-                Thread.sleep(50L)
-            }
-        }.start()
+
         try {
             // Initialize
             val connectionSuccessInt = this.mInstance.a(nfcTag)
@@ -64,20 +48,10 @@ class WaveShareHandler {
                 failMsg = "Failed to connect to tag"
             } else {
                 var flashSuccessInt = -1
-                Thread {
-                    flashSuccessInt = this.mInstance.a(ePaperSize, bitmap)
-                }.apply {
-                    start()
-                    join()
-                }
+                flashSuccessInt = this.mInstance.a(ePaperSize, bitmap)
                 if (flashSuccessInt == 1) {
                     // Success!
-                    val toast = Toast.makeText(
-                        mActivity.applicationContext,
-                        "Flash Successful!",
-                        Toast.LENGTH_LONG
-                    )
-                    toast.show()
+                    success = true
                 } else if (flashSuccessInt == 2) {
                     failMsg = "Incorrect image resolution"
                 } else {
@@ -89,15 +63,9 @@ class WaveShareHandler {
             Log.v("WaveshareHandler, IO Exception", failMsg)
         }
 
-        done = true
-        Handler(Looper.getMainLooper()).postDelayed({
-            progressDialog.hide()
-        }, 2000L)
-        if (!success) {
-            val toast = Toast.makeText(mActivity.applicationContext, "FAILED to Flash :( $failMsg", Toast.LENGTH_LONG)
-            toast.show()
+        return object : FlashResult {
+            override val success = success
+            override val errMessage = failMsg
         }
-
-        return success
     }
 }

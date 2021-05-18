@@ -28,6 +28,7 @@
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"
                 android:text="@string/imagePreviewText"
+                android:textSize="12pt"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,8 +39,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image_preview_content_description"
                 android:layout_marginTop="10dp"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
+                android:minWidth="340dp"
+                android:minHeight="240dp"
                 android:padding="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -53,11 +54,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="180dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/previewImageWrapper"
         android:text="@string/hold_phone_to_flash_text" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/whileFlashingArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/previewImageWrapper"
+        android:layout_marginTop="414dp"
+        android:visibility="gone"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/nfc_write_dialog" />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

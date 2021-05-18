@@ -13,8 +13,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardBackgroundColor="@color/design_default_color_secondary"
-        android:layout_marginTop="120dp"
+        app:cardBackgroundColor="@color/purple_200"
+        android:layout_marginTop="80dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"
+                android:textSize="12pt"
                 android:text="@string/reflash_cta_text" />
 
             <ImageView
@@ -41,8 +42,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reflashButtonText"
                 android:layout_marginTop="20dp"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
+                android:minWidth="340dp"
+                android:minHeight="240dp"
                 android:padding="10dp"
                 android:contentDescription="@string/image_preview_content_description"
                 app:srcCompat="@android:drawable/stat_sys_warning" />
@@ -55,7 +56,7 @@
         android:layout_height="65dp"
         android:layout_marginStart="84dp"
         android:layout_marginLeft="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="@string/pick_image_file_cta_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reflashButton" />
